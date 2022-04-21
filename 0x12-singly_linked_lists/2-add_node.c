@@ -1,41 +1,58 @@
 #include "lists.h"
+
+unsigned int _strlen(const char *str);
+
 /**
-  *_strlen - finds length of a string.
-  *@str: string.
-  *
-  *Return: lengt of string.
-  */
-int _strlen(const char *str)
+ * add_node - adds a new node at the beginning of a list_t list
+ * @head: pointer to the address of the first node
+ * @str: the value of the str firld of the new node
+ *
+ * Return: head of the new list
+ */
+list_t *add_node(list_t **head, const char *str)
 {
-	int i;
+	list_t *new;
 
-	while (str[i] != '\0')
-		i++;
+	if (head == NULL)
+		return (NULL);
 
-	return (i);
+	/* allocate space for the new node */
+	new = malloc(sizeof(list_t));
+	if (new == NULL)
+		return (NULL);
+
+	if (str == NULL)
+	{
+		new->str = strdup("(nil)");
+		new->len = 0;
+	}
+	else
+	{
+		new->str = strdup(str);
+		new->len = _strlen(str);
+	}
+
+	new->next = *head;
+	*head = new;
+
+	return (*head);
 }
 
 /**
-  *add_node - adds a new node at the beginning of a list_t.
-  *@head: pointer to first element of the list.
-  *@str: string to be duplicated.
-  *
-  *Return: address of the new element or NULL if it failed.
-  */
-list_t *add_node(list_t **head, const char *str)
+ * _strlen - finds the length of a given string
+ * @str: given string
+ *
+ * Return: length of str
+ */
+unsigned int _strlen(const char *str)
 {
-	list_t *temp;
+	unsigned int length = 0;
 
-	temp = malloc(sizeof(list_t));
-	if (temp == NULL)
-		return (NULL);
-	/* temp now points to first element*/
-	temp->next = *head;
-	temp->str = strdup(str);
-	temp->len = _strlen(str);
+	while (*str)
+	{
+		length++;
+		str++;
+	}
 
-	*head = temp;
-
-	return (*head);
-
+	return (length);
 }
